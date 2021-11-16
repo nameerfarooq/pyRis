@@ -23,40 +23,40 @@ def ControlDecode(
                 JalrOut):
     @always_comb
     def ControlDecoding():
-        branchOut.next = bool(False)
-        RegWriteOut.next = bool(False)
-        ImmediateOut.next = bool(False)
-        LoadOut.next = bool(False)
-        StoreOut.next = bool(False)
-        UtypeOut.next = bool(False)
-        AuipcOut.next = bool(False)
-        JalOut.next = bool(False)
-        JalrOut.next  = bool(False)
+        branchOut.next = intbv(0)[1:]
+        RegWriteOut.next = intbv(0)[1:]
+        ImmediateOut.next = intbv(0)[1:]
+        LoadOut.next = intbv(0)[1:]
+        StoreOut.next = intbv(0)[1:]
+        UtypeOut.next = intbv(0)[1:]
+        AuipcOut.next = intbv(0)[1:]
+        JalOut.next = intbv(0)[1:]
+        JalrOut.next  = intbv(0)[1:]
         # print("hello worlddd")
-        if B_type == True:
-            branchOut.next = True
-        if (UJ_type | U_type | R_type | I_type | L_type | Auipc_type) == True:
-            RegWriteOut.next = True
-        if ( I_type | S_type | L_type ) == True:
-            ImmediateOut.next = True
-        if S_type == True:
-            StoreOut.next = True
-        if L_type == True:
-            LoadOut.next = True
-        if U_type == True:
-            UtypeOut.next = True
-        if Auipc_type == True:
-            AuipcOut.next = True
-        if Jalr_type == True:
-            JalrOut.next = True
-        if UJ_type == True:
-            JalOut.next = True
+        if B_type == intbv(1)[1:]:
+            branchOut.next = intbv(1)[1:]
+        if (UJ_type | U_type | R_type | I_type | L_type | Auipc_type) == intbv(1)[1:]:
+            RegWriteOut.next = intbv(1)[1:]
+        if ( I_type | S_type | L_type ) == intbv(1)[1:]:
+            ImmediateOut.next = intbv(1)[1:]
+        if S_type == intbv(1)[1:]:
+            StoreOut.next = intbv(1)[1:]
+        if L_type == intbv(1)[1:]:
+            LoadOut.next = intbv(1)[1:]
+        if U_type == intbv(1)[1:]:
+            UtypeOut.next = intbv(1)[1:]
+        if Auipc_type == intbv(1)[1:]:
+            AuipcOut.next = intbv(1)[1:]
+        if Jalr_type == intbv(1)[1:]:
+            JalrOut.next = intbv(1)[1:]
+        if UJ_type == intbv(1)[1:]:
+            JalOut.next = intbv(1)[1:]
         
     return ControlDecoding
 
 @block
 def SimulateControlDecode():    
-    R_type,I_type,B_type,L_type,S_type,U_type, UJ_type,Auipc_type,Jalr_type,branchOut,RegWriteOut,ImmediateOut,LoadOut, StoreOut,UtypeOut,AuipcOut,JalOut,JalrOut = [Signal(bool(False)) for i in range(18)]
+    R_type,I_type,B_type,L_type,S_type,U_type, UJ_type,Auipc_type,Jalr_type,branchOut,RegWriteOut,ImmediateOut,LoadOut, StoreOut,UtypeOut,AuipcOut,JalOut,JalrOut = [Signal(intbv(1)[1:]) for i in range(18)]
     control = ControlDecode(R_type,I_type,B_type,L_type,S_type,U_type, UJ_type,Auipc_type,Jalr_type,branchOut,RegWriteOut,ImmediateOut,LoadOut, StoreOut,UtypeOut,AuipcOut,JalOut,JalrOut)
     lst =  [R_type,I_type,B_type,L_type,S_type,U_type, UJ_type,Auipc_type,Jalr_type]
     @instance
@@ -64,7 +64,7 @@ def SimulateControlDecode():
         # for i in range(10):
         R_type.next,I_type.next,B_type.next,L_type.next,S_type.next,U_type.next, UJ_type.next,Auipc_type.next,Jalr_type.next = [False for i in range(9)]
         select = random.choice(lst)
-        select.next = True
+        select.next = intbv(1)[1:]
         
         # print("iteration #",i)
         yield delay(10)

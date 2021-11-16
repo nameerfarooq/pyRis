@@ -57,26 +57,26 @@ def ControlUnit(opcode,
 
 @block
 def SimulateControlUnit():
-        R_type = Signal(bool(False))
-        I_type= Signal(bool(False))
-        B_type= Signal(bool(False))
-        L_type= Signal(bool(False))
-        S_type= Signal(bool(False))
-        U_type= Signal(bool(False))
-        UJ_type = Signal(bool(False))
-        Auipc_type= Signal(bool(False))
-        Jalr_type = Signal(bool(False))
-        branchOut = Signal(bool(False))
-        RegWriteOut = Signal(bool(False))
-        ImmediateOut = Signal(bool(False))
-        LoadOut = Signal(bool(False))
-        StoreOut = Signal(bool(False))
-        UtypeOut = Signal(bool(False))
-        AuipcOut = Signal(bool(False))
-        JalOut = Signal(bool(False))
-        JalrOut = Signal(bool(False))
+        R_type = Signal(intbv(0)[1:])
+        I_type= Signal(intbv(0)[1:])
+        B_type= Signal(intbv(0)[1:])
+        L_type= Signal(intbv(0)[1:])
+        S_type= Signal(intbv(0)[1:])
+        U_type= Signal(intbv(0)[1:])
+        UJ_type = Signal(intbv(0)[1:])
+        Auipc_type= Signal(intbv(0)[1:])
+        Jalr_type = Signal(intbv(0)[1:])
+        branchOut = Signal(intbv(0)[1:])
+        RegWriteOut = Signal(intbv(0)[1:])
+        ImmediateOut = Signal(intbv(0)[1:])
+        LoadOut = Signal(intbv(0)[1:])
+        StoreOut = Signal(intbv(0)[1:])
+        UtypeOut = Signal(intbv(0)[1:])
+        AuipcOut = Signal(intbv(0)[1:])
+        JalOut = Signal(intbv(0)[1:])
+        JalrOut = Signal(intbv(0)[1:])
         opCode = Signal(intbv(0)[7:])
-        opCodeList = [0x33]
+        opCodeList = [intbv(51)[7:]]
         ControledUnit = ControlUnit(opCode,
                 R_type,
                 I_type,
@@ -96,7 +96,7 @@ def SimulateControlUnit():
                 AuipcOut,
                 JalOut,
                 JalrOut)
-        # ControledUnit.convert('Verilog')
+        ControledUnit.convert('Verilog')
         @instance
         def Run():
             for _ in opCodeList:
