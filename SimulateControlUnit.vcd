@@ -1,0 +1,165 @@
+$date
+    Thu Nov 18 01:33:49 2021
+$end
+$version
+    MyHDL 0.11
+$end
+$timescale
+    1ns
+$end
+
+$scope module SimulateControlUnit $end
+$var reg 1 ! AuipcOut $end
+$var reg 1 " Auipc_type $end
+$var reg 1 # B_type $end
+$var reg 1 $ I_type $end
+$var reg 1 % ImmediateOut $end
+$var reg 1 & JalOut $end
+$var reg 1 ' JalrOut $end
+$var reg 1 ( Jalr_type $end
+$var reg 1 ) L_type $end
+$var reg 1 * LoadOut $end
+$var reg 1 + R_type $end
+$var reg 1 , RegWriteOut $end
+$var reg 1 - S_type $end
+$var reg 1 . StoreOut $end
+$var reg 1 / UJ_type $end
+$var reg 1 0 U_type $end
+$var reg 1 1 UtypeOut $end
+$var reg 1 2 branchOut $end
+$var reg 7 3 opCode $end
+$scope module ControlUnit $end
+$var reg 7 3 opcode $end
+$var reg 1 + R_type $end
+$var reg 1 $ I_type $end
+$var reg 1 # B_type $end
+$var reg 1 ) L_type $end
+$var reg 1 - S_type $end
+$var reg 1 0 U_type $end
+$var reg 1 / UJ_type $end
+$var reg 1 " Auipc_type $end
+$var reg 1 ( Jalr_type $end
+$var reg 1 2 branchOut $end
+$var reg 1 , RegWriteOut $end
+$var reg 1 % ImmediateOut $end
+$var reg 1 * LoadOut $end
+$var reg 1 . StoreOut $end
+$var reg 1 1 UtypeOut $end
+$var reg 1 ! AuipcOut $end
+$var reg 1 & JalOut $end
+$var reg 1 ' JalrOut $end
+$scope module TypeDecode0 $end
+$var reg 1 " Auipc_type $end
+$var reg 1 # B_type $end
+$var reg 1 $ I_type $end
+$var reg 1 ( Jalr_type $end
+$var reg 1 ) L_type $end
+$var reg 1 + R_type $end
+$var reg 1 - S_type $end
+$var reg 1 / UJ_type $end
+$var reg 1 0 U_type $end
+$var reg 7 3 opCode $end
+$upscope $end
+$scope module ControlDecode0 $end
+$var reg 1 ! AuipcOut $end
+$var reg 1 " Auipc_type $end
+$var reg 1 # B_type $end
+$var reg 1 $ I_type $end
+$var reg 1 % ImmediateOut $end
+$var reg 1 & JalOut $end
+$var reg 1 ' JalrOut $end
+$var reg 1 ( Jalr_type $end
+$var reg 1 ) L_type $end
+$var reg 1 * LoadOut $end
+$var reg 1 + R_type $end
+$var reg 1 , RegWriteOut $end
+$var reg 1 - S_type $end
+$var reg 1 . StoreOut $end
+$var reg 1 / UJ_type $end
+$var reg 1 0 U_type $end
+$var reg 1 1 UtypeOut $end
+$var reg 1 2 branchOut $end
+$upscope $end
+$upscope $end
+$upscope $end
+
+$enddefinitions $end
+$dumpvars
+b0 !
+b0 "
+b0 #
+b0 $
+b0 %
+b0 &
+b0 '
+b0 (
+b0 )
+b0 *
+b0 +
+b0 ,
+b0 -
+b0 .
+b0 /
+b0 0
+b0 1
+b0 2
+b0000000 3
+$end
+b0110011 3
+b1 +
+b1 ,
+#10
+b0010011 3
+b0 +
+b1 $
+b1 %
+#20
+b1100011 3
+b0 $
+b1 #
+b1 2
+b0 ,
+b0 %
+#30
+b0000011 3
+b0 #
+b1 )
+b0 2
+b1 ,
+b1 %
+b1 *
+#40
+b0100011 3
+b0 )
+b1 -
+b0 ,
+b0 *
+b1 .
+#50
+b0110111 3
+b0 -
+b1 0
+b1 ,
+b0 %
+b0 .
+b1 1
+#60
+b1101111 3
+b0 0
+b1 /
+b0 1
+b1 &
+#70
+b0010111 3
+b0 /
+b1 "
+b1 !
+b0 &
+#80
+b1100111 3
+b0 "
+b1 (
+b0 ,
+b0 !
+b1 '
+#90

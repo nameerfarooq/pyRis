@@ -1,7 +1,6 @@
 from myhdl import *
 from ControlDecode import ControlDecode
 from typeDecode import TypeDecode
-
 @block
 def ControlUnit(opcode,
                 R_type,
@@ -76,7 +75,8 @@ def SimulateControlUnit():
         JalOut = Signal(intbv(0)[1:])
         JalrOut = Signal(intbv(0)[1:])
         opCode = Signal(intbv(0)[7:])
-        opCodeList = [intbv(51)[7:]]
+        opCodeList = [intbv(51)[7:],intbv(19)[7:],intbv(99)[7:],intbv(3)[7:],intbv(35)[7:],intbv(55)[7:],intbv(111)[7:],intbv(23)[7:],intbv(103)[7:]]
+        # R,I,B,L,S,U,UJ,AUIPC,JALR
         ControledUnit = ControlUnit(opCode,
                 R_type,
                 I_type,
@@ -101,25 +101,31 @@ def SimulateControlUnit():
         def Run():
             for _ in opCodeList:
                 opCode.next = _
-            yield delay(10)
-            print("R_type ", R_type,"branchOut ", branchOut)
-            print("I_type ", I_type,"RegWriteOut ", RegWriteOut)
-            print("B_type ", B_type,"ImmediateOut ", ImmediateOut)
-            print("L_type ", L_type,"LoadOut ", LoadOut)
-            print("S_type ", S_type,"StoreOut ", StoreOut)
-            print("U_type ", U_type,"UtypeOut ", UtypeOut)
-            print("UJ_type ", UJ_type,"Auipc_type ", AuipcOut)
-            print("Auipc_type ", Auipc_type,"Jalr_type ", JalrOut)
-            print("Jalr_type ", Jalr_type,"JalOut ", JalOut)
+                yield delay(10)
+                print("R_type ", R_type,"branchOut ", branchOut)
+                print("I_type ", I_type,"RegWriteOut ", RegWriteOut)
+                print("B_type ", B_type,"ImmediateOut ", ImmediateOut)
+                print("L_type ", L_type,"LoadOut ", LoadOut)
+                print("S_type ", S_type,"StoreOut ", StoreOut)
+                print("U_type ", U_type,"UtypeOut ", UtypeOut)
+                print("UJ_type ", UJ_type,"Auipc_type ", AuipcOut)
+                print("Auipc_type ", Auipc_type,"Jalr_type ", JalrOut)
+                print("Jalr_type ", Jalr_type,"JalOut ", JalOut)
+                print("###########################################")
     
         return Run, ControledUnit
 
-controlUnitSimulate = SimulateControlUnit()
-controlUnitSimulate.run_sim()
+# controlUnitSimulate = SimulateControlUnit()
+# controlUnitSimulate.run_sim(100)
+tb = SimulateControlUnit()
+tb.config_sim(trace=True)
+tb.run_sim()
+# tb =SimulateControlUnit()
+# tb.config_sim(trace=True)
+# tb.run_sim()
 
-
-
-
+# tb_fsm = SimulateControlUnit()
+# tb_fsm = traceSignals(SimulateControlUnit())
 
 
 
