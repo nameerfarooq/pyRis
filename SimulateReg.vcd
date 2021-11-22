@@ -1,0 +1,143 @@
+$date
+    Mon Nov 22 21:30:08 2021
+$end
+$version
+    MyHDL 0.11
+$end
+$timescale
+    1ns
+$end
+
+$scope module SimulateReg $end
+$var real 1 ! Data_A $end
+$var real 1 " Data_B $end
+$var real 1 # Rd $end
+$var real 1 $ WriteBack $end
+$var real 1 % rs_A $end
+$var real 1 & rs_B $end
+$var real 1 ' writeEnable $end
+$scope module RegArray $end
+$var reg 32 ( RegArray(0) $end
+$var reg 32 ) RegArray(1) $end
+$var reg 32 * RegArray(2) $end
+$var reg 32 + RegArray(3) $end
+$var reg 32 , RegArray(4) $end
+$var reg 32 - RegArray(5) $end
+$var reg 32 . RegArray(6) $end
+$var reg 32 / RegArray(7) $end
+$var reg 32 0 RegArray(8) $end
+$var reg 32 1 RegArray(9) $end
+$var reg 32 2 RegArray(10) $end
+$var reg 32 3 RegArray(11) $end
+$var reg 32 4 RegArray(12) $end
+$var reg 32 5 RegArray(13) $end
+$var reg 32 6 RegArray(14) $end
+$var reg 32 7 RegArray(15) $end
+$var reg 32 8 RegArray(16) $end
+$var reg 32 9 RegArray(17) $end
+$var reg 32 : RegArray(18) $end
+$var reg 32 ; RegArray(19) $end
+$var reg 32 < RegArray(20) $end
+$var reg 32 = RegArray(21) $end
+$var reg 32 > RegArray(22) $end
+$var reg 32 ? RegArray(23) $end
+$var reg 32 @ RegArray(24) $end
+$var reg 32 A RegArray(25) $end
+$var reg 32 B RegArray(26) $end
+$var reg 32 C RegArray(27) $end
+$var reg 32 D RegArray(28) $end
+$var reg 32 E RegArray(29) $end
+$var reg 32 F RegArray(30) $end
+$var reg 32 G RegArray(31) $end
+$upscope $end
+$scope module RegFile0 $end
+$var real 1 ! Data_A $end
+$var real 1 " Data_B $end
+$var real 1 # Rd $end
+$var real 1 $ WriteBack $end
+$var real 1 ' WriteEnable $end
+$var real 1 % rs_A $end
+$var real 1 & rs_B $end
+$scope module RegArray $end
+$var reg 32 ( RegArray(0) $end
+$var reg 32 ) RegArray(1) $end
+$var reg 32 * RegArray(2) $end
+$var reg 32 + RegArray(3) $end
+$var reg 32 , RegArray(4) $end
+$var reg 32 - RegArray(5) $end
+$var reg 32 . RegArray(6) $end
+$var reg 32 / RegArray(7) $end
+$var reg 32 0 RegArray(8) $end
+$var reg 32 1 RegArray(9) $end
+$var reg 32 2 RegArray(10) $end
+$var reg 32 3 RegArray(11) $end
+$var reg 32 4 RegArray(12) $end
+$var reg 32 5 RegArray(13) $end
+$var reg 32 6 RegArray(14) $end
+$var reg 32 7 RegArray(15) $end
+$var reg 32 8 RegArray(16) $end
+$var reg 32 9 RegArray(17) $end
+$var reg 32 : RegArray(18) $end
+$var reg 32 ; RegArray(19) $end
+$var reg 32 < RegArray(20) $end
+$var reg 32 = RegArray(21) $end
+$var reg 32 > RegArray(22) $end
+$var reg 32 ? RegArray(23) $end
+$var reg 32 @ RegArray(24) $end
+$var reg 32 A RegArray(25) $end
+$var reg 32 B RegArray(26) $end
+$var reg 32 C RegArray(27) $end
+$var reg 32 D RegArray(28) $end
+$var reg 32 E RegArray(29) $end
+$var reg 32 F RegArray(30) $end
+$var reg 32 G RegArray(31) $end
+$upscope $end
+$upscope $end
+$upscope $end
+
+$enddefinitions $end
+$dumpvars
+s0 !
+s0 "
+s13 #
+s200 $
+s12 %
+s13 &
+s1 '
+b00000000000000000000000000000000 (
+b00000000000000000000000000000000 )
+b00000000000000000000000000000000 *
+b00000000000000000000000000000000 +
+b00000000000000000000000000000000 ,
+b00000000000000000000000000000000 -
+b00000000000000000000000000000000 .
+b00000000000000000000000000000000 /
+b00000000000000000000000000000000 0
+b00000000000000000000000000000000 1
+b00000000000000000000000000000000 2
+b00000000000000000000000000000000 3
+b00000000000000000000000000000000 4
+b00000000000000000000000000000000 5
+b00000000000000000000000000000000 6
+b00000000000000000000000000000000 7
+b00000000000000000000000000000000 8
+b00000000000000000000000000000000 9
+b00000000000000000000000000000000 :
+b00000000000000000000000000000000 ;
+b00000000000000000000000000000000 <
+b00000000000000000000000000000000 =
+b00000000000000000000000000000000 >
+b00000000000000000000000000000000 ?
+b00000000000000000000000000000000 @
+b00000000000000000000000000000000 A
+b00000000000000000000000000000000 B
+b00000000000000000000000000000000 C
+b00000000000000000000000000000000 D
+b00000000000000000000000000000000 E
+b00000000000000000000000000000000 F
+b00000000000000000000000000000000 G
+$end
+b00000000000000000000000011001000 5
+s200 "
+#10
+#20
