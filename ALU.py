@@ -36,13 +36,13 @@ def ALU(operandA, operandB,aluControl,branchStatus,Result ):
     
 @block
 def SimulateALU():
-    operandA = Signal(intbv(2,0,2**32,32))
-    operandB = Signal(intbv(3,0,2**32,32))
-    AluControl = Signal(intbv(2,0,32,5))
+    operandA = Signal(intbv(7,0,2**32,32))
+    operandB = Signal(intbv(7,0,2**32,32))
+    AluControl = Signal(intbv(21,0,32,5))
     branchStatus = Signal(intbv(0,0,2,1))
     result = Signal(intbv(0,0,2**32,32))
     ALUU = ALU(operandA,operandB,AluControl,branchStatus,result)
-    ALUU.convert('Verilog')
+    # ALUU.convert('Verilog')
 
     @instance
     def run():
