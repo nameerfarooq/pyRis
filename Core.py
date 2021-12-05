@@ -13,10 +13,25 @@ from PC import PC
 def Core(clk,Reset):
     @always_seq(clk.posedge)
     def TopModule():
+        # defining all signals
+
+
         
+        
+
+
         # PC
         
         pc_out,pc4_out,pc_in = [Signal(intbv(0,0,2**32,32))]
+        
+        if JalrOut == 1:
+            pc.next = result
+        elif JalOut == 1:
+            pc.next = uj_imm
+        elif ALUbranchOut == 1 and branchOut == 1 :
+            pc.next = sb_imm
+        else:
+            pc.next = pc4_out
         pc = PC(clk,pc_in,pc_out,pc4_out)
         
         # INSTRUCTION MEMORY
@@ -47,7 +62,7 @@ def Core(clk,Reset):
         elif UtypeOut == 1:
             writeBack.next == u_imm
         elif LoadOut == 1:
-            writeBack.next == Data_out
+            writeBack.next == DMdataOut
         else:
             writeBack.next = result
 
@@ -67,5 +82,41 @@ def Core(clk,Reset):
         aluControl = ALUcontrol(instructionOut[14:12], instructionOut[30],branchOut,aluControlpin)
 
         # ALU
+        
+        operandA , operandB= [Signal(intbv(0,0,2**32)) for i in range(2)] 
+        ALUbranchOut = Signal(intbv(0)[1:])
+        ALUOP = Signal(intbv(0)[5:])
+        result = Signal(intbv(0,0,2**32,32))
+        
+        # ///// operand A logic
 
+        if AuipcOut == 1:
+            operandA.next = pc4_out
+        else:
+            operandA.next = bus_A
+        
+        # ///// operand B logic
+
+        if AuipcOut == 0 and ImmediateOut == 1 :
+            if LoadOut == 1 or StoreOut == 1:
+                operandB.next = s_imm
+            else:
+                operandB.next = i_imm
+        elif AuipcOut == 1 and ImmediateOut == 0 :
+            operandB.next = u_imm
+        else:
+            operandB.next = bus_B
+
+        # ///// ALUOP logic
+        if StoreOut == 1 or LoadOut == 1:
+            ALUOP.next = 0
+        else:
+            ALUOP.next = aluControlpin
+
+        alu = ALU(operandA,operandB,ALUOP,ALUbranchOut,result)
+
+
+        #  DATA MEMORY 
+        DMdataOut = Signal(intbv(0,0,2**32,32))
+        DM = DataMemory(clk,result,bus_B,DMdataOut,LoadOut,StoreOut)
         
