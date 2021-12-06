@@ -2,7 +2,7 @@ from myhdl import *
 from ControlDecode import ControlDecode
 from typeDecode import TypeDecode
 @block
-def ControlUnit(opcode,
+def ControlUnit(clk,opcode,
                 R_type,
                 I_type,
                 B_type,
@@ -23,7 +23,7 @@ def ControlUnit(opcode,
                 JalrOut):
     
     
-    td = TypeDecode(opcode,
+    td = TypeDecode(clk,opcode,
                 R_type,
                 I_type,
                 B_type,

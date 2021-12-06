@@ -10,7 +10,7 @@ from ImmediateGenerator import ImmediateGen
 from PC import PC
 
 @block
-def Core(clk,
+def Core(clk,reset_n,
 pc_out,pc4_out,pc_in,
 instructionOut,
 CUsignals,
@@ -27,7 +27,7 @@ result,
 DMdataOut):
     @always(clk.posedge)
     def TopModule():
-        pc_out.next = 10
+        
         # defining all signals
 
         # pc_out,pc4_out,pc_in = [Signal(intbv(0,0,2**32,32)) for i in range(3)]
@@ -61,8 +61,8 @@ DMdataOut):
         
         # INSTRUCTION MEMORY
 
-        # instructionsList = [0x0040006f]
-        instructionsList = array[0x04020193,0x00500113,0x00500213,0xfa610193,0x00510193,0x00418663,0x00000013,0x00302423]
+        instructionsList = [0x0040006f,0x0040006f]
+        # instructionsList = array[0x04020193,0x00500113,0x00500213,0xfa610193,0x00510193,0x00418663,0x00000013,0x00302423]
         dummyCLK = Signal(intbv(1))
         IM = InstructionMemory(dummyCLK,pc,instructionOut,instructionsList)
 
@@ -138,7 +138,7 @@ DMdataOut):
         
         DM = DataMemory(clk,result,bus_B,DMdataOut,LoadOut,StoreOut)
         
-        return DM,Aluu,IM,IMGEN,REGFILE,ALUcnt,CU,pc
+        # return DM,Aluu,IM,IMGEN,REGFILE,ALUcnt,CU,pc
     return TopModule
 
 @block
@@ -157,10 +157,11 @@ def SimulateCore():
     ALUOP = Signal(intbv(0)[5:])
     result = Signal(intbv(0,0,2**32,32))
     DMdataOut = Signal(intbv(0,0,2**32,32))
-    clk = Signal(1)
+    clk = Signal(bool(1))
+    reset_n = ResetSignal(0, active=0, isasync=False)
     
     
-    core = Core(clk,
+    core = Core(clk,reset_n,
 pc_out,pc4_out,pc_in,
 instructionOut,
 CUsignals,
@@ -176,6 +177,18 @@ ALUOP,
 result,
 DMdataOut)
     # core.convert('Verilog')
+    @instance
+    def clockGen():
+        c = 0
+        while c <= 15:
+            clk.next = not clk
+            c+=1
+            yield delay(10)
+
+    @instance
+    def stimulus():
+        yield delay(10)
+        reset_n.next = 1
     @instance
     def RunCore():
         for i in range(2):
@@ -197,7 +210,7 @@ DMdataOut)
             print("uj type immediate :",uj_imm)
             print("i type :",ImmediateOut)
             
-    return RunCore, core
+    return RunCore, stimulus, clockGen, core
     
 TestingCore = SimulateCore()
 TestingCore.config_sim(trace=True)

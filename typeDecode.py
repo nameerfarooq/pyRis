@@ -86,7 +86,7 @@ from myhdl import *
 
 
 @block
-def TypeDecode(opCode,
+def TypeDecode(clk,opCode,
                 R_type,
                 I_type,
                 B_type,
@@ -96,7 +96,7 @@ def TypeDecode(opCode,
                 UJ_type,
                 Auipc_type,
                 Jalr_type):
-    @always_comb
+    @always(clk.posedge)
     def typeDec():
         # R_type.next,I_type.next,B_type.next,L_type.next,S_type.next,U_type.next,UJ_type.next,Auipc_type.next,Jalr_type.next = [intbv(0)[0:]  for i in range(9)]
         R_type.next = intbv(0)[1:]
