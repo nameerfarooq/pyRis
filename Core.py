@@ -1,5 +1,5 @@
 from myhdl import *
-
+from array import array
 from ALU import ALU
 from ALUControl import ALUcontrol
 from ControlUnit import ControlUnit
@@ -10,53 +10,78 @@ from ImmediateGenerator import ImmediateGen
 from PC import PC
 
 @block
-def Core(clk,Reset):
-    @always_seq(clk.posedge)
+def Core(clk,
+pc_out,pc4_out,pc_in,
+instructionOut,
+CUsignals,
+branchOut, RegWriteOut, ImmediateOut, LoadOut, StoreOut, UtypeOut, AuipcOut, JalOut, JalrOut,
+s_imm, sb_imm, uj_imm, u_imm, i_imm,
+bus_A, bus_B,
+writeBack,
+rd,
+aluControlpin,
+operandA , operandB,
+ALUbranchOut,
+ALUOP,
+result,
+DMdataOut):
+    @always(clk.posedge)
     def TopModule():
+        pc_out.next = 10
         # defining all signals
 
-
-        
-        
+        # pc_out,pc4_out,pc_in = [Signal(intbv(0,0,2**32,32)) for i in range(3)]
+        # instructionOut = Signal(intbv(0,0,2**32,32))
+        # CUsignals = [Signal(intbv(0)[1:]) for i in range(9)]
+        # branchOut, RegWriteOut, ImmediateOut, LoadOut, StoreOut, UtypeOut, AuipcOut, JalOut, JalrOut = [Signal(intbv(0)[1:]) for i in range(9)]
+        # s_imm, sb_imm, uj_imm, u_imm, i_imm = [Signal(intbv(0)[32:]) for i in range(5)]
+        # bus_A, bus_B = [Signal(intbv(0)[32:]) for i in range(2)]
+        # writeBack = Signal(intbv(0)[32:])
+        # rd = Signal(intbv(0)[5:])
+        # aluControlpin = Signal(intbv(0,0,(2**32)-1))
+        # operandA , operandB= [Signal(intbv(0,0,2**32)) for i in range(2)] 
+        # ALUbranchOut = Signal(intbv(0)[1:])
+        # ALUOP = Signal(intbv(0)[5:])
+        # result = Signal(intbv(0,0,2**32,32))
+        # DMdataOut = Signal(intbv(0,0,2**32,32))
 
 
         # PC
         
-        pc_out,pc4_out,pc_in = [Signal(intbv(0,0,2**32,32))]
         
         if JalrOut == 1:
-            pc.next = result
+            pc_out.next = result
         elif JalOut == 1:
-            pc.next = uj_imm
+            pc_out.next = uj_imm
         elif ALUbranchOut == 1 and branchOut == 1 :
-            pc.next = sb_imm
+            pc_out.next = sb_imm
         else:
-            pc.next = pc4_out
+            pc_out.next = pc4_out
         pc = PC(clk,pc_in,pc_out,pc4_out)
         
         # INSTRUCTION MEMORY
 
-        instructionsList = [0x00500193,0x00500113,0x00500213,0xfa610193,0x00510193,0x00418663,0x00000013,0x00302423]
-        instructionOut = Signal(intbv(0,0,2**32,32))
-        inst_mem = InstructionMemory(pc,instructionOut,instructionsList)
+        # instructionsList = [0x0040006f]
+        instructionsList = array[0x04020193,0x00500113,0x00500213,0xfa610193,0x00510193,0x00418663,0x00000013,0x00302423]
+        dummyCLK = Signal(intbv(1))
+        IM = InstructionMemory(dummyCLK,pc,instructionOut,instructionsList)
 
         # Control Unit
         
-        CUsignals = [Signal(intbv(0)[1:]) for i in range(9)]
-        branchOut, RegWriteOut, ImmediateOut, LoadOut, StoreOut, UtypeOut, AuipcOut, JalOut, JalrOut = [Signal(intbv(0)[1:]) for i in range(9)]
-        CU = ControlUnit(instructionOut[6:],*CUsignals,branchOut, RegWriteOut, ImmediateOut, LoadOut, StoreOut, UtypeOut, AuipcOut, JalOut, JalrOut)
+
+        CU = ControlUnit(dummyCLK,instructionOut[6:],*CUsignals,branchOut, RegWriteOut, ImmediateOut, LoadOut, StoreOut, UtypeOut, AuipcOut, JalOut, JalrOut)
 
         # Immediate Generator
         
-        s_imm, sb_imm, uj_imm, u_imm, i_imm = [Signal(intbv(0)[32:]) for i in range(5)]
-        ImmediateGenerator = ImmediateGen(instructionOut,pc_out,s_imm, sb_imm, uj_imm, u_imm, i_imm)
+
+        IMGEN = ImmediateGen(instructionOut,pc_out,s_imm, sb_imm, uj_imm, u_imm, i_imm)
 
         # Register File
-        bus_A, bus_B = Signal(intbv(0)[32:])
+
         
         #   ///// write back logic
 
-        writeBack = Signal(0)[32:]
+        
         if JalOut == 1:
             writeBack.next = pc4_out
         elif UtypeOut == 1:
@@ -68,25 +93,18 @@ def Core(clk,Reset):
 
         #  ///// rd logic
 
-        rd = Signal(0)[5:]
         if JalOut == 1 :
             rd.next = 1
         else:
-            rd.next = instructionOut[11,7]
-                                         # rs_a        rs_b                    rd writeback , writeEnable , dataA, dataB               
-        regiterFile = RegFile(clk,instructionOut[19:15], instructionOut[24:20],rd,writeBack, RegWriteOut , bus_A , bus_B)
+            rd.next = instructionOut[11:7]
+                                            # rs_a        rs_b                    rd writeback , writeEnable , dataA, dataB               
+        REGFILE = RegFile(clk,instructionOut[19:15], instructionOut[24:20],rd,writeBack, RegWriteOut , bus_A , bus_B)
 
         #  ALU CONTROL
 
-        aluControlpin = Signal(intbv(0,0,(2**32)-1))
-        aluControl = ALUcontrol(instructionOut[14:12], instructionOut[30],branchOut,aluControlpin)
+        ALUcnt = ALUcontrol(instructionOut[14:12], instructionOut[30],branchOut,aluControlpin)
 
         # ALU
-        
-        operandA , operandB= [Signal(intbv(0,0,2**32)) for i in range(2)] 
-        ALUbranchOut = Signal(intbv(0)[1:])
-        ALUOP = Signal(intbv(0)[5:])
-        result = Signal(intbv(0,0,2**32,32))
         
         # ///// operand A logic
 
@@ -113,10 +131,74 @@ def Core(clk,Reset):
         else:
             ALUOP.next = aluControlpin
 
-        alu = ALU(operandA,operandB,ALUOP,ALUbranchOut,result)
+        Aluu = ALU(operandA,operandB,ALUOP,ALUbranchOut,result)
 
 
         #  DATA MEMORY 
-        DMdataOut = Signal(intbv(0,0,2**32,32))
+        
         DM = DataMemory(clk,result,bus_B,DMdataOut,LoadOut,StoreOut)
         
+        return DM,Aluu,IM,IMGEN,REGFILE,ALUcnt,CU,pc
+    return TopModule
+
+@block
+def SimulateCore():
+    pc_out,pc4_out,pc_in = [Signal(intbv(0,0,2**32,32)) for i in range(3)]
+    instructionOut = Signal(intbv(0,0,2**32,32))
+    CUsignals = [Signal(intbv(0)[1:]) for i in range(9)]
+    branchOut, RegWriteOut, ImmediateOut, LoadOut, StoreOut, UtypeOut, AuipcOut, JalOut, JalrOut = [Signal(intbv(0)[1:]) for i in range(9)]
+    s_imm, sb_imm, uj_imm, u_imm, i_imm = [Signal(intbv(0)[32:]) for i in range(5)]
+    bus_A, bus_B = [Signal(intbv(0)[32:]) for i in range(2)]
+    writeBack = Signal(intbv(0)[32:])
+    rd = Signal(intbv(0)[5:])
+    aluControlpin = Signal(intbv(0,0,(2**32)-1))
+    operandA , operandB= [Signal(intbv(0,0,2**32)) for i in range(2)] 
+    ALUbranchOut = Signal(intbv(0)[1:])
+    ALUOP = Signal(intbv(0)[5:])
+    result = Signal(intbv(0,0,2**32,32))
+    DMdataOut = Signal(intbv(0,0,2**32,32))
+    clk = Signal(1)
+    
+    
+    core = Core(clk,
+pc_out,pc4_out,pc_in,
+instructionOut,
+CUsignals,
+branchOut, RegWriteOut, ImmediateOut, LoadOut, StoreOut, UtypeOut, AuipcOut, JalOut, JalrOut,
+s_imm, sb_imm, uj_imm, u_imm, i_imm,
+bus_A, bus_B,
+writeBack,
+rd,
+aluControlpin,
+operandA , operandB,
+ALUbranchOut,
+ALUOP,
+result,
+DMdataOut)
+    # core.convert('Verilog')
+    @instance
+    def RunCore():
+        for i in range(2):
+            yield delay(10)
+            print("PC :",pc_out)
+            print("Instruction memory out :",instructionOut)
+            print("rd :",rd)
+            print("bus A :",bus_A)
+            print("bus B :",bus_B)
+            print("write back :",writeBack)
+            print("rs_a :",operandA)
+            print("rs_b :",operandB)
+            print("aluop :",ALUOP)
+            print("result :",result)
+            print("DM out :",DMdataOut)
+            print("i type immediate :",i_imm)
+            print("s type immediate :",s_imm)
+            print("u type immediate :",u_imm)
+            print("uj type immediate :",uj_imm)
+            print("i type :",ImmediateOut)
+            
+    return RunCore, core
+    
+TestingCore = SimulateCore()
+TestingCore.config_sim(trace=True)
+TestingCore.run_sim()

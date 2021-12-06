@@ -17,31 +17,35 @@ def ImmediateGen(inst,pc,s_imm,sb_imm,uj_imm,u_imm,i_imm):
     return generate
 
 DW = 2**31
+# @block
+# def simulate():
+#     pc = Signal(intbv(0, 0, DW)[32:])
+#     inst = Signal(intbv(0, 0, DW)[32:])
+#     s_imm = Signal(intbv(0)[32:])
+#     sb_imm= Signal(intbv(0)[32:])
+#     uj_imm  = Signal(intbv(0)[32:])
+#     u_imm = Signal(intbv(0)[32:])
+#     i_imm = Signal(intbv(0)[32:])
+#     imm = ImmediateGen(inst,pc,s_imm , sb_imm , uj_imm , u_imm, i_imm)
+    
+# #    test
+#     instructionsList = [70353171]
+#     imm.convert('Verilog')
+#     @instance
+#     def run():
+#         for _ in instructionsList:
+#             inst.next = _
+#             pc.next = intbv(0)[32:]
+#             yield delay(10)
+#             print("inst : ",inst)
+#             print("pc",pc)
+#             print("i_imm : ",i_imm)
+#             print("s_imm : ",s_imm)
+#             print("sb_imm : ",sb_imm)
+#             print("uj_imm : ",uj_imm)
+#             print("u_imm : ",u_imm)
+#             print("...........")
+#     return run, imm
 
-@block
-def simulate():
-    inst,pc = [Signal(intbv(0, 0, DW)[32:]) for i in range(2)]
-    s_imm , sb_imm , uj_imm , u_imm, i_imm = [Signal(intbv(0)[32:]) for i in range(5)]
-    imm = ImmediateGen(inst,pc,s_imm , sb_imm , uj_imm , u_imm, i_imm)
-
-#    test
-    instructionsList = [0x020101e7]
-
-    @instance
-    def run():
-        for _ in instructionsList:
-            inst.next = _
-            pc.next = 0x00000000
-            yield delay(10)
-            print("inst : ",inst)
-            print("pc",pc)
-            print("i_imm : ",i_imm)
-            print("s_imm : ",s_imm)
-            print("sb_imm : ",sb_imm)
-            print("uj_imm : ",uj_imm)
-            print("u_imm : ",u_imm)
-            print("...........")
-    return run, imm
-
-tb = simulate()
-tb.run_sim()
+# tb = simulate()
+# tb.run_sim()

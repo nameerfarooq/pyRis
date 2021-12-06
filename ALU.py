@@ -34,26 +34,26 @@ def ALU(operandA, operandB,aluControl,branchStatus,Result ):
             branchStatus.next = 1
     return Alu
     
-@block
-def SimulateALU():
-    operandA = Signal(intbv(7,0,2**32,32))
-    operandB = Signal(intbv(7,0,2**32,32))
-    AluControl = Signal(intbv(21,0,32,5))
-    branchStatus = Signal(intbv(0,0,2,1))
-    result = Signal(intbv(0,0,2**32,32))
-    ALUU = ALU(operandA,operandB,AluControl,branchStatus,result)
-    # ALUU.convert('Verilog')
+# @block
+# def SimulateALU():
+#     operandA = Signal(intbv(4278190335,0,2**32,32))
+#     operandB = Signal(intbv(7,0,2**32,32))
+#     AluControl = Signal(intbv(0,0,32,5))
+#     branchStatus = Signal(intbv(0,0,2,1))
+#     result = Signal(intbv(0,0,2**32,32))
+#     ALUU = ALU(operandA,operandB,AluControl,branchStatus,result)
+#     # ALUU.convert('Verilog')
 
-    @instance
-    def run():
-        yield delay(10)
-        print("operand A : ", bin(operandA))
-        print("operand B : ", bin(operandB))
-        print("Alu control : ", bin(AluControl))
-        print("branch status : ", bin(branchStatus))
-        print("result : ", bin(result))
-    return run, ALUU
+#     @instance
+#     def run():
+#         yield delay(10)
+#         print("operand A : ", bin(operandA))
+#         print("operand B : ", bin(operandB))
+#         print("Alu control : ", bin(AluControl))
+#         print("branch status : ", bin(branchStatus))
+#         print("result : ", bin(result))
+#     return run, ALUU
 
-AluTester = SimulateALU()
-AluTester.config_sim(trace=True)
-AluTester.run_sim()
+# AluTester = SimulateALU()
+# AluTester.config_sim(trace=True)
+# AluTester.run_sim()
