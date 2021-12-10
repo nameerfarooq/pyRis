@@ -1,16 +1,20 @@
-from myhdl import *
+from myhdl import block, always_comb, always_seq, Signal, intbv
+
+
 @block
 def DataMemory(clk, addr, data_in, data_out, load, store):
-    DW = 2**31
+    DW = 2 ** 31
     rows = 1024
-    Memory = [Signal(intbv(0,-DW,DW)) for i in range(rows)]
+    Memory = [Signal(intbv(0, -DW, DW)) for __ in range(rows)]
+
     @always_comb
     def read():
         data_out.next = Memory[int(addr)] if load else 0
-    @always_comb
+
+    @always_seq(clk.posedge, reset=None)
     def write():
-        Memory[int(addr)].next = data_in if store==1 and  clk==1 else 0
-    
+        Memory[int(addr)].next = data_in if store == 1 and  clk == 1 else 0
+
     return write, read
 
 # @block
@@ -29,7 +33,7 @@ def DataMemory(clk, addr, data_in, data_out, load, store):
 #     def RunDM():
 #         for i in dataList:
 #             data_in.next = i
-       
+
 #             yield delay(10)
 #             print("clock : " ,int(clk))
 #             print("load : " ,int(load))

@@ -1,16 +1,20 @@
-from myhdl import *
+from myhdl import block, always_comb, Signal, modbv
+
 
 @block
-def PC(clk,input,pc,pc4):
-    reg = Signal(modbv(0,0,2**32))
+def PC(clk, input, pc, pc4):
+    reg = Signal(modbv(0, 0, 2 ** 32))
+
     @always_comb
     def read():
-        pc.next = reg 
+        pc.next = reg
         pc4.next = reg + 4
+
     @always_comb
     def write():
         if clk == 1:
             reg.next = input
+
     return write, read
 
 # @block

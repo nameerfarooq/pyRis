@@ -1,8 +1,6 @@
 # from typing import List
 # from myhdl import *
 
-
-
 # @block
 # def TypeDecode(clk,opCode,
 #                 R_type,
@@ -26,7 +24,7 @@
 #         UJ_type.next = intbv(0)[1:]
 #         Auipc_type.next= intbv(0)[1:]
 #         Jalr_type.next = intbv(0)[1:]
-        
+
 #         if opCode == 51:
 #             R_type.next = intbv(1)[1:]
 #         elif opCode == 19:
@@ -74,19 +72,11 @@
 # # typedecodeSimulate = SimulateTypeDecode()
 # # typedecodeSimulate.run_sim()
 
-
-
-
-
-
-
-from typing import List
-from myhdl import *
-
+from myhdl import block, always, intbv
 
 
 @block
-def TypeDecode(clk,opCode,
+def TypeDecode(clk, opCode,
                 R_type,
                 I_type,
                 B_type,
@@ -96,19 +86,20 @@ def TypeDecode(clk,opCode,
                 UJ_type,
                 Auipc_type,
                 Jalr_type):
+
     @always(clk.posedge)
     def typeDec():
         # R_type.next,I_type.next,B_type.next,L_type.next,S_type.next,U_type.next,UJ_type.next,Auipc_type.next,Jalr_type.next = [intbv(0)[0:]  for i in range(9)]
         R_type.next = intbv(0)[1:]
-        I_type.next= intbv(0)[1:]
-        B_type.next= intbv(0)[1:]
-        L_type.next= intbv(0)[1:]
-        S_type.next= intbv(0)[1:]
-        U_type.next= intbv(0)[1:]
+        I_type.next = intbv(0)[1:]
+        B_type.next = intbv(0)[1:]
+        L_type.next = intbv(0)[1:]
+        S_type.next = intbv(0)[1:]
+        U_type.next = intbv(0)[1:]
         UJ_type.next = intbv(0)[1:]
-        Auipc_type.next= intbv(0)[1:]
+        Auipc_type.next = intbv(0)[1:]
         Jalr_type.next = intbv(0)[1:]
-        
+
         if opCode == 51:
             R_type.next = intbv(1)[1:]
         elif opCode == 19:
@@ -127,6 +118,7 @@ def TypeDecode(clk,opCode,
             Auipc_type.next = intbv(1)[1:]
         elif opCode == 103:
             Jalr_type.next = intbv(1)[1:]
+
     return typeDec
 # @block
 # def SimulateTypeDecode():

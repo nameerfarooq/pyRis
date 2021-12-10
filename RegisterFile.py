@@ -1,22 +1,22 @@
-from myhdl import * 
-import myhdl
-import array as arr
+from myhdl import block, Signal, intbv, always_comb, always_seq
+
+
 @block
-def RegFile(clk,rs_A,rs_B,Rd,WriteBack , WriteEnable, Data_A, Data_B):
+def RegFile(clk, rs_A, rs_B, Rd, WriteBack , WriteEnable, Data_A, Data_B):
     rows = 32
-    DW = 2**(rows-1)
-    RegArray = [Signal(intbv(0,-DW,DW)) for i in range(rows+1)]
+    DW = 2 ** (rows - 1)
+    RegArray = [Signal(intbv(0, -DW, DW)) for __ in range(rows + 1)]
 
     @always_comb
     def read():
         Data_A.next = RegArray[int(rs_A)]
         Data_B.next = RegArray[int(rs_B)]
-    @always_comb
+
+    @always_seq(clk.posedge, reset=None)
     def write():
-        if clk ==1:
-            if WriteEnable == 1 and int(Rd) != 0 :
-                RegArray[Rd].next =  WriteBack
-    
+        if WriteEnable == 1 and int(Rd) != 0:
+            RegArray[Rd].next = WriteBack
+
     return read, write
 # @block
 # def SimulateReg():
@@ -43,7 +43,6 @@ def RegFile(clk,rs_A,rs_B,Rd,WriteBack , WriteEnable, Data_A, Data_B):
 #             print("-------------------------------------")
 #             print('\nUsing MyHDL version: {}'.format(myhdl.__version__))
 #     return regg, simulatingReg
-
 
 # tb = SimulateReg()
 # tb.config_sim(trace=True)

@@ -1,14 +1,17 @@
-from myhdl import *
+from myhdl import block, always_comb, concat, intbv
+
+
 @block
-def ALUcontrol(func3,func7,branchIn,controlOut):
+def ALUcontrol(func3, func7, branchIn, controlOut):
+
     @always_comb
     def Control():
         if branchIn == 1:
-            controlOut.next = concat(intbv(2,0,3,2),func3)
+            controlOut.next = concat(intbv(2, 0, 3, 2), func3)
         else:
-            controlOut.next = concat(intbv(0,0,1,1),func7,func3)
-    return Control
+            controlOut.next = concat(intbv(0, 0, 1, 1), func7, func3)
 
+    return Control
 
 # @block
 # def SimulateALUcontrol():
