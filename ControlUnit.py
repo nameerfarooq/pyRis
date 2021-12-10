@@ -1,8 +1,11 @@
-from myhdl import *
-from ControlDecode import ControlDecode
-from typeDecode import TypeDecode
+from myhdl import block
+
+from pyRis.ControlDecode import ControlDecode
+from pyRis.typeDecode import TypeDecode
+
+
 @block
-def ControlUnit(clk,opcode,
+def ControlUnit(clk, opcode,
                 R_type,
                 I_type,
                 B_type,
@@ -21,9 +24,8 @@ def ControlUnit(clk,opcode,
                 AuipcOut,
                 JalOut,
                 JalrOut):
-    
-    
-    td = TypeDecode(clk,opcode,
+
+    td = TypeDecode(clk, opcode,
                 R_type,
                 I_type,
                 B_type,
@@ -52,7 +54,6 @@ def ControlUnit(clk,opcode,
             JalOut,
             JalrOut)
     return td, cd
-    
 
 # @block
 # def SimulateControlUnit():
@@ -113,9 +114,8 @@ def ControlUnit(clk,opcode,
 #                 print("Auipc_type ", Auipc_type,"Jalr_type ", JalrOut)
 #                 print("Jalr_type ", Jalr_type,"JalOut ", JalOut)
 #                 print("###########################################")
-    
-#         return Run, ControledUnit
 
+#         return Run, ControledUnit
 
 # tb = SimulateControlUnit()
 # tb.config_sim(trace=True)

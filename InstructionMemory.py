@@ -1,11 +1,13 @@
-from math import comb
-from myhdl import *
+from myhdl import block, always_seq
+
+
 @block
-def InstructionMemory(clk,adr,instructionOut,instructions):
-    
-    @always(clk)
+def InstructionMemory(clk, adr, instructionOut, instructions):
+
+    @always_seq(clk.posedge, reset=None)
     def read():
         instructionOut.next = instructions[int(adr)]
+
     return read
 
 # @block
